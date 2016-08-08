@@ -57,6 +57,11 @@ class Cassette extends Model
         }
     }
 	
+	// lance le telechargement d'un fichier 
+    public function download(){
+        $this->telecharger_fichier($this->data['nomFichier']);
+    }
+	
    /**
     *  récupération infos cassette et artiste(s)
     *  @param array $data contient les champs, les conditions, le group by, l'ordre et la limitation
