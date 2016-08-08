@@ -20,12 +20,6 @@ class Model
     
     // liste les caractères sensibles
     protected $sensChars = array(' ','#','&','é','è','ê','ë','í','ì','î','ï','ú','ù','û','ü','ý','ÿ','ç','ñ','Á','À','Â','Ä','Ã','Å','Ó','Ò','Ô','Ö','Õ','É','È','Ê','Ë','Í','Ì','Î','Ï','Ú','Ù','Û','Ü','Ý','Ÿ','Ç','Ñ');
-   
-    // instancie le model $name
-    static function load($name){
-        require(ROOT."model/$name.php");
-        return new $name();
-    }
 	
 	/**
     *  instancie le model demandé et permet son utilisation sous forme d'objet  

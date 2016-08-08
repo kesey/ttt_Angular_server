@@ -47,8 +47,8 @@ class Cassette extends Model
             }
             if($d['cassette'][0]['date_sortie'] < $d['date']['max']){
                 $d['cassNext'] = $this->getAllInfos(array("conditions" => $this->table.".date_sortie >= '".$d['cassette'][0]['date_sortie']."' AND ".$this->table.".id_".$this->table." != ".$id,
-                                                                      "order" => "date_sortie ASC, ".$this->table.".id_".$this->table." ASC",
-                                                                      "limit" => 1));                
+															   "order" => "date_sortie ASC, ".$this->table.".id_".$this->table." ASC",
+															   "limit" => 1));                
                 $d['cassNext'] = $d['cassNext'][0];
             }
             return $d;
