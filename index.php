@@ -7,7 +7,7 @@
  * NAME: index.php
  */
  
-header("Content-Type:application/json");
+//header("Content-Type:application/json");
 header("Access-Control-Allow-Origin: *");
 define('WEBROOT', str_replace('index.php','',$_SERVER['SCRIPT_NAME']));
 define('ROOT', str_replace('index.php','',$_SERVER['SCRIPT_FILENAME']));
@@ -16,8 +16,7 @@ define('MAX_RAR_SIZE', 524288000);
 define('MAX_STR_LEN', 40);
 define('NBRE_EX', 75); */
 
-require_once(ROOT."core/core.php");
-require_once(ROOT."functions.php"); 
+require_once(ROOT."core/core.php"); 
 
 /* if(isset($_SESSION['info'])){
     unset($_SESSION['info']);
@@ -30,13 +29,40 @@ if(isset($_SESSION['infoLog'])){
 } */
 
 if(isset($_GET['p']) && !empty($_GET['p'])){
-    $name = htmlspecialchars($_GET['p']);
-	$price = get_price($name);
+	// var_dump($_GET['p']);
+    $par = htmlspecialchars($_GET['p']);
+	$tabParam = explode('/', $par);
+	$model = $tabParam[0];
 	
-	if(empty($price)) {
-		deliver_response(200, "$name book not found", NULL);
-	} else {
-		deliver_response(200, "$name book found", $price);
+	//vérification de l'existence du model
+	$tabFiles = scandir(ROOT.'model');
+	foreach ($tabFiles as $key => $value){
+		if($value == '.' || $value == '..'){        
+			unset($tabFiles[$key]);
+		}
+	}
+	$tabModel= str_replace('.php','',$tabFiles);
+	if(in_array($model, $tabModel)){
+		// instancie le model demandé et permet son utilisation sous forme d'objet  
+		require_once(ROOT.'/model/'.strtolower($model).'.php');
+		$model = new $model();
+		
+		$action = isset($tabParam[1]) ? $tabParam[1] : 'index'; //action par défaut
+		
+		if(method_exists($model, $action)){            
+            array_splice($tabParam, 3);   
+			unset($tabParam[0]);
+			unset($tabParam[1]);    
+			$response = call_user_func_array(array($model, $action), $tabParam);
+			if($response){
+				$json_response = json_encode($response);
+				echo $json_response;
+			} else {
+				deliver_response(400, "Invalid Request", NULL);
+			}
+		} else {
+			deliver_response(400, "Invalid Request", NULL);
+		}
 	}
 } else {
     deliver_response(400, "Invalid Request", NULL);

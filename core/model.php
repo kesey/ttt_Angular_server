@@ -10,6 +10,7 @@
 class Model
 {
     protected $table;
+	protected $models;
     
     // utile si le model instancié peut être archivé
     protected $notArchive = "1 = 1";
@@ -24,6 +25,30 @@ class Model
     static function load($name){
         require(ROOT."model/$name.php");
         return new $name();
+    }
+	
+	/**
+    *  instancie le model demandé et permet son utilisation sous forme d'objet  
+    *  @param string $name nom du model à instancier
+    */
+    protected function loadModel($name){
+        require_once(ROOT.'/model/'.strtolower($name).'.php');
+        $this->$name = new $name();
+    }
+	
+	// instancie le(s) model(s) utile(s) et assigne les données passées en POST à un tableau $this->data
+    function __construct() {
+        if(isset($_POST)){
+            $this->data = $_POST;
+        }
+        if(isset($_FILES)){
+            $this->files = $_FILES;
+        }
+        if(isset($this->models)){
+            foreach($this->models as $value){
+                $this->loadModel($value);
+            }
+        }
     }
 /*------------------------------------------------------------------------------traitement mots de passe--------------------------------------------------------------------*/    
    /**
@@ -254,7 +279,7 @@ class Model
     *  securise la restitution des données entrées en base de données grâce à un wysiwyg
     *  @param string $value chaine contenant les données à securiser
     */
-   protected function securiteWys($value){
+	protected function securiteWys($value){
         include_once(ROOT."plugIn/htmLawed/htmLawed.php");
         $elements = 'a, b, strong, i, em, li, ol, ul, br, span, p, hr, h1, h2, h3, h4, h5, h6, pre';
         return htmLawed($value, array('safe' => 1, 'elements' => $elements));   
