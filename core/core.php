@@ -2,8 +2,8 @@
 
 /* 
  * AUTEUR: Fabien Meunier
- * PROJECT: Third_Type_Tapes
- * PATH: Third_Type_Tapes/core/
+ * PROJECT: Third_Type_Tapes_2_server
+ * PATH: Third_Type_Tapes_2_server/core/
  * NAME: core.php
  */
 
