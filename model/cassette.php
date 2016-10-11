@@ -15,8 +15,59 @@ class Cassette extends Model
     
     //utile pour ne pas prendre en compte les lignes archivées
     var $notArchive = "suppr != 1";
-	
-	// affiche tous les éléments 
+
+    /**
+     *  récupération infos cassette et artiste(s)
+     *  @param array $data contient les champs, les conditions, le group by, l'ordre et la limitation
+     **/
+    public function getAllInfos($data = array()){
+        global $db;
+        $fields = "*";
+        $conditions = "1 = 1";
+        if(isset($data["fields"])){
+            $fields = $this->securite_bdd($data['fields']);
+        }
+        if(isset($data['id'])){
+            $id = $this->securite_bdd($data['id']);
+            $conditions = $this->table.".id_".$this->table." = :id";
+        } else if(isset($data['conditions'])){
+            $conditions = $this->securite_bdd($data['conditions']);
+        }
+        $group = "";
+        if(isset($data['groupBy'])){
+            $group = $this->securite_bdd($data['groupBy']);
+            $group = " GROUP BY ".$this->table.".".$group;
+        }
+        $order = " ORDER BY ".$this->table.".date_sortie DESC";
+        if(isset($data['order'])){
+            $order = $this->securite_bdd($data['order']);
+            $order = " ORDER BY ".$this->table.".".$order;
+        }
+        $limit = "";
+        if(isset($data['limit'])){
+            $limit = $this->securite_bdd($data['limit']);
+            $limit = " LIMIT ".$limit;
+        }
+        $sql = "SELECT ".$fields." FROM ".$this->table." INNER JOIN produire ON ".$this->table.".id_".$this->table." = produire.id_".$this->table." INNER JOIN artiste ON produire.id_artiste = artiste.id_artiste WHERE ".$this->table.".".$this->notArchive." AND artiste.".$this->notArchive." AND ".$conditions.$group.$order.$limit;
+        $pdoObj = $db->prepare($sql);
+        if(isset($id)){
+            $pdoObj->bindParam(':id', $id, PDO::PARAM_INT);
+        }
+        $success = $pdoObj->execute();
+        if($success){
+            $tabFind = array();
+            while ($infos = $pdoObj->fetch()){
+                $tabFind[] = $infos;
+            }
+            $pdoObj->closeCursor();
+            return $this->securiteHtml($tabFind);
+        } else {
+            return FALSE;
+        }
+    }
+
+
+    // affiche tous les éléments
     public function index(){
         $d['cassettes'] = $this->getAllInfos(array('groupBy' => "id_".$this->table));
         $d['artistes'] = $this->getAllInfos(array('fields' => "artiste.nom, ".$this->table.".id_".$this->table));
@@ -61,57 +112,7 @@ class Cassette extends Model
     public function download(){
         $this->telecharger_fichier($this->data['nomFichier']);
     }
-	
-   /**
-    *  récupération infos cassette et artiste(s)
-    *  @param array $data contient les champs, les conditions, le group by, l'ordre et la limitation
-    **/  
-    public function getAllInfos($data = array()){
-        global $db;
-        $fields = "*";
-        $conditions = "1 = 1";
-        if(isset($data["fields"])){
-            $fields = $this->securite_bdd($data['fields']);
-        }
-        if(isset($data['id'])){
-            $id = $this->securite_bdd($data['id']);
-            $conditions = $this->table.".id_".$this->table." = :id";
-        } else if(isset($data['conditions'])){
-            $conditions = $this->securite_bdd($data['conditions']);
-        }
-        $group = "";
-        if(isset($data['groupBy'])){
-            $group = $this->securite_bdd($data['groupBy']);
-            $group = " GROUP BY ".$this->table.".".$group;
-        }
-        $order = " ORDER BY ".$this->table.".date_sortie DESC";
-        if(isset($data['order'])){
-            $order = $this->securite_bdd($data['order']);
-            $order = " ORDER BY ".$this->table.".".$order;
-        }
-        $limit = "";
-        if(isset($data['limit'])){
-            $limit = $this->securite_bdd($data['limit']);
-            $limit = " LIMIT ".$limit;
-        }
-        $sql = "SELECT ".$fields." FROM ".$this->table." INNER JOIN produire ON ".$this->table.".id_".$this->table." = produire.id_".$this->table." INNER JOIN artiste ON produire.id_artiste = artiste.id_artiste WHERE ".$this->table.".".$this->notArchive." AND artiste.".$this->notArchive." AND ".$conditions.$group.$order.$limit;
-        $pdoObj = $db->prepare($sql);
-        if(isset($id)){
-            $pdoObj->bindParam(':id', $id, PDO::PARAM_INT);
-        }
-        $success = $pdoObj->execute();
-        if($success){
-            $tabFind = array();
-            while ($infos = $pdoObj->fetch()){
-                $tabFind[] = $infos;
-            }
-            $pdoObj->closeCursor();           
-            return $this->securiteHtml($tabFind);
-        } else {
-            return FALSE;
-        }
-    }
-    
+
    /**
     *  vérifie la/les donnée(s) passée(s) en argument
     *  @param array $data donnée(s) à vérifier
