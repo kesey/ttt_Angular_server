@@ -6,15 +6,16 @@
  * PATH: Third_Type_Tapes_2_server/
  * NAME: index.php
  */
- 
-//header("Content-Type:application/json");
+
 header("Access-Control-Allow-Origin: *");
+header("Content-Type:application/json");
+
 define('WEBROOT', str_replace('index.php','',$_SERVER['SCRIPT_NAME']));
 define('ROOT', str_replace('index.php','',$_SERVER['SCRIPT_FILENAME']));
-/* define('MAX_IMG_SIZE', 2097152);
+define('MAX_IMG_SIZE', 2097152);
 define('MAX_RAR_SIZE', 524288000);
 define('MAX_STR_LEN', 40);
-define('NBRE_EX', 75); */
+define('NBRE_EX', 75);
 
 require_once(ROOT."core/core.php"); 
 
@@ -28,8 +29,19 @@ if(isset($_SESSION['infoLog'])){
     unset($_SESSION['infoLog']);
 } */
 
+function deliver_response($status, $status_message, $data)
+{
+	header("HTTP/1.1 $status $status_message");
+
+	$response['status'] = $status;
+	$response['status_message'] = $status_message;
+	$response['data'] = $data;
+	$json_response = json_encode($response);
+	echo $json_response;
+}
+
 if(isset($_GET['p']) && !empty($_GET['p'])){
-	// var_dump($_GET['p']);
+
     $par = htmlspecialchars($_GET['p']);
 	$tabParam = explode('/', $par);
 	$model = $tabParam[0];
@@ -41,7 +53,9 @@ if(isset($_GET['p']) && !empty($_GET['p'])){
 			unset($tabFiles[$key]);
 		}
 	}
+
 	$tabModel= str_replace('.php','',$tabFiles);
+
 	if(in_array($model, $tabModel)){
 		// instancie le model demandé et permet son utilisation sous forme d'objet  
 		require_once(ROOT.'/model/'.strtolower($model).'.php');
@@ -49,34 +63,26 @@ if(isset($_GET['p']) && !empty($_GET['p'])){
 		
 		$action = isset($tabParam[1]) ? $tabParam[1] : 'index'; //action par défaut
 		
-		if(method_exists($model, $action)){            
-            array_splice($tabParam, 3);   
-			unset($tabParam[0]);
-			unset($tabParam[1]);    
+		if(method_exists($model, $action)){
+            array_splice($tabParam, 3);
+			unset($tabParam[0], $tabParam[1]);
+
 			$response = call_user_func_array(array($model, $action), $tabParam);
+
 			if($response){
 				$json_response = json_encode($response);
 				echo $json_response;
 			} else {
-				deliver_response(400, "Invalid Request", NULL);
+				deliver_response(400, "Invalid Request", "Invalid Param");
 			}
 		} else {
-			deliver_response(400, "Invalid Request", NULL);
+			deliver_response(400, "Invalid Request", "Invalid Action");
 		}
+	} else {
+		deliver_response(400, "Invalid Request", "Invalid Object");
 	}
 } else {
-    deliver_response(400, "Invalid Request", NULL);
-}
-
-function deliver_response($status, $status_message, $data)
-{
-	header("HTTP/1.1 $status $status_message");
-	
-	$response['status'] = $status;
-	$response['status_message'] = $status_message;
-	$response['data'] = $data;
-	$json_response = json_encode($response);
-	echo $json_response;
+    deliver_response(301, "Moved Permanently", "Invalid Request");
 }
 
 /* $parametres = explode('/', $par);

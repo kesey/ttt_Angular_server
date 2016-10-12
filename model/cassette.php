@@ -66,7 +66,6 @@ class Cassette extends Model
         }
     }
 
-
     // affiche tous les éléments
     public function index(){
         $d['cassettes'] = $this->getAllInfos(array('groupBy' => "id_".$this->table));
