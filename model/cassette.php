@@ -20,7 +20,8 @@ class Cassette extends Model
      *  récupération infos cassette et artiste(s)
      *  @param array $data contient les champs, les conditions, le group by, l'ordre et la limitation
      **/
-    public function getAllInfos($data = array()){
+    public function getAllInfos($data = array())
+    {
         global $db;
         $fields = "*";
         $conditions = "1 = 1";
@@ -66,9 +67,15 @@ class Cassette extends Model
         }
     }
 
-    // affiche tous les éléments
-    public function index(){
-        $d['cassettes'] = $this->getAllInfos(array('groupBy' => "id_".$this->table));
+    /**
+     *  affiche le nombre d'éléments définit par le paramètre
+     *  @param string $limit restreint les résultats retournés
+     */
+    public function index($limit = "0, 10")
+    {
+        $d['totalCassettes'] = $this->findAll(array('fields' => 'COUNT(*) as total'));
+        $d['cassettes'] = $this->getAllInfos(array('groupBy' => "id_".$this->table,
+                                                     'limit' => $limit));
         $d['artistes'] = $this->getAllInfos(array('fields' => "artiste.nom, ".$this->table.".id_".$this->table));
         $length = sizeof($d['cassettes']);
         for ($i = 0; $i < $length; $i++) {
@@ -82,7 +89,8 @@ class Cassette extends Model
     *  affiche les détails d'un élément particulier
     *  @param int|string $id l'id de l'élément dont on souhaite visualiser les détails
     */
-    public function view($id){
+    public function view($id)
+    {
 		$model = $this->models[0];
         if($this->exist('id_'.$this->table,$id)){
             $d['cassette'] = $this->getAllInfos(array('id' => $id));            
@@ -108,7 +116,8 @@ class Cassette extends Model
     }
 	
 	// lance le telechargement d'un fichier 
-    public function download(){
+    public function download()
+    {
         $this->telecharger_fichier($this->data['nomFichier']);
     }
 
@@ -117,7 +126,8 @@ class Cassette extends Model
     *  @param array $data donnée(s) à vérifier
     *  @param array $fichier fichier à controler
     **/
-    public function verifications($data, $fichier) {
+    public function verifications($data, $fichier)
+    {
         $isOk = TRUE;
         if(empty($data["titre"])){
             $_SESSION["info"] = "Veuillez renseigner un titre";
@@ -187,7 +197,8 @@ class Cassette extends Model
     *  vérifie le fichier passé en argument
     *  @param array $fichier fichier à vérifier
     **/
-    public function verifFile($fichier){
+    public function verifFile($fichier)
+    {
         $isOk = TRUE;        
         if(empty($fichier["name"])){
             $isOk = FALSE;
@@ -216,7 +227,8 @@ class Cassette extends Model
     *  vérifie le fichier (.rar) passé en argument
     *  @param array $fichier fichier à vérifier
     **/
-    public function verifRar($fichier){
+    public function verifRar($fichier)
+    {
         $isOk = TRUE;
         if(empty($fichier["name"])){
             $isOk = FALSE;
