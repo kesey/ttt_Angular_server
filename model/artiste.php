@@ -7,7 +7,8 @@
  * NAME: artiste.php
  */
 
-class Artiste extends Model{
+class Artiste extends Model
+{
     public $id;
     var $table = "artiste";
     

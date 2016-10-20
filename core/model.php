@@ -31,7 +31,7 @@ class Model
     }
 	
 	// instancie le(s) model(s) utile(s) et assigne les données passées en POST à un tableau $this->data
-    function __construct() {
+    function __construct(){
         if(isset($_POST)){
             $this->data = $_POST;
         }
