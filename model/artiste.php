@@ -2,8 +2,8 @@
 
 /* 
  * AUTEUR: Fabien Meunier
- * PROJECT: Third_Type_Tapes
- * PATH: Third_Type_Tapes/model/
+ * PROJECT: Third_Type_Tapes_2_server
+ * PATH: Third_Type_Tapes_2_server/model/
  * NAME: artiste.php
  */
 
@@ -19,7 +19,8 @@ class Artiste extends Model
     *  récupération infos cassette(s) et artiste(s)
     *  @param array $data contient les conditions, le group by, l'ordre et la limitation
     **/  
-    public function getAllInfos($data = array()) {
+    public function getAllInfos($data = array())
+    {
         global $db;
         $conditions = "1 = 1";
         if(isset($data['id'])){
@@ -60,13 +61,59 @@ class Artiste extends Model
             return FALSE;
         }
     }
+
+    /**
+     *  affiche le nombre d'éléments définit par le paramètre
+     *  @param string $limit restreint les résultats retournés
+     */
+    public function index($limit = "0, 10")
+    {
+        $d['totalArtistes'] = $this->findAll(array('fields' => 'COUNT(*) as total'));
+        $d['artistes'] = $this->getAllInfos(array('groupBy' => "id_".$this->table,
+                                                    'limit' => $limit));
+        $length = sizeof($d['artistes']);
+        for ($i = 0; $i < $length; $i++) {
+            $imgResize = explode('.', $d['artistes'][$i]['image_artiste']);
+            $d['artistes'][$i]['image_artiste_resize'] = $imgResize[0].'-resize.'.$imgResize[1];
+        }
+        return $d;
+    }
+
+    /**
+     *  affiche les détails d'un élément particulier
+     *  @param int|string $id l'id de l'élément dont on souhaite visualiser les détails
+     */
+    public function view($id)
+    {
+        if($this->exist('id_'.$this->table,$id)){
+            $d['artiste'] = $this->getAllInfos(array('id' => $id));
+            $d['id']['min'] = $this->getDataMaxMin("id_artiste", "MIN")["min"];
+            $d['id']['max'] = $this->getDataMaxMin("id_artiste", "MAX")["max"];
+            if($id > $d['id']['min']){
+                $d['artPrev'] = $this->getAllInfos(array("conditions" => $this->table.".id_artiste < ".$d['artiste'][0]['id_artiste'],
+                                                              "order" => "id_artiste DESC",
+                                                              "limit" => 1));
+                $d['artPrev'] = $d['artPrev'][0];
+            }
+            if($id < $d['id']['max']){
+                $d['artNext'] = $this->getAllInfos(array("conditions" => $this->table.".id_artiste > ".$d['artiste'][0]['id_artiste'],
+                                                              "order" => "id_artiste ASC",
+                                                              "limit" => 1));
+                $d['artNext'] = $d['artNext'][0];
+            }
+            return $d;
+        } else {
+            return FALSE;
+        }
+    }
     
     /**
     *  vérifie la/les donnée(s) passée(s) en argument
     *  @param array $data donnée(s) à vérifier
     *  @param array $fichier fichier à controler
     **/
-    public function verifications($data, $fichier) {
+    public function verifications($data, $fichier)
+    {
         $isOk = TRUE;
         if(empty($data["nom"])){
             $_SESSION["info"] = "Veuillez renseigner un nom";
@@ -99,7 +146,8 @@ class Artiste extends Model
     *  vérifie le fichier passé en argument
     *  @param array $fichier fichier à vérifier
     **/
-    public function verifFile($fichier) {
+    public function verifFile($fichier)
+    {
         $isOk = TRUE;        
         if(empty($fichier["name"])){
             $isOk = FALSE;
