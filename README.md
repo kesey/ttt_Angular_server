@@ -1,3 +1,4 @@
 # ttt_Angular_server
 
-api rest write in PHP (PSR-2), it return json
+api rest write in PHP (PSR-2)
+return json
