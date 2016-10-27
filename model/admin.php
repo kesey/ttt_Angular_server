@@ -7,7 +7,8 @@
  * NAME: admin.php
  */
 
-class Admin extends Model{
+class Admin extends Model
+{
     public $id;
     var $table = "admin";
     
@@ -21,35 +22,36 @@ class Admin extends Model{
     *  vérifie la/les donnée(s) passée(s) en argument
     *  @param array $data donnée(s) à vérifier
     **/
-    public function verifications($data) {               
-        $isOk = TRUE;
-        if(empty($data["nom"])){
+    public function verifications($data)
+    {
+        $isOk = true;
+        if (empty($data["nom"])) {
             $_SESSION["info"] = "Veuillez renseigner un nom";
-            $isOk = FALSE;
+            $isOk = false;
         } 
-        if(empty($data["identifiant"])){
+        if (empty($data["identifiant"])) {
             $_SESSION["info"] = "Veuillez renseigner un identifiant";
-            $isOk = FALSE;
-        } else if(empty($data['id_admin'])){
-            if($this->exist('identifiant', $data["identifiant"])){
+            $isOk = false;
+        } elseif (empty($data['id_admin'])) {
+            if ($this->exist('identifiant', $data["identifiant"])) {
                 $_SESSION["info"] = "Cet identifiant existe déjà";
-                $isOk = FALSE;
+                $isOk = false;
             }
         }
-        if(empty($data["mot_de_passe"])){
+        if (empty($data["mot_de_passe"])) {
             $_SESSION["info"] = "Veuillez renseigner un mot de passe";
-            $isOk = FALSE;
-        } else if(empty($data['id_admin'])){
-            $exist = FALSE;
+            $isOk = false;
+        } elseif (empty($data['id_admin'])) {
+            $exist = false;
             $tabPsw = $this->findAll(array("fields" => "mot_de_passe"));
             foreach ($tabPsw as $value) {
-                if(password_verify($data["mot_de_passe"], $value["mot_de_passe"])){
-                    $exist = TRUE;
+                if (password_verify($data["mot_de_passe"], $value["mot_de_passe"])) {
+                    $exist = true;
                 }
             }
-            if($exist){
+            if ($exist) {
                 $_SESSION["info"] = "Ce mot de passe existe déjà";
-                $isOk = FALSE;
+                $isOk = false;
             }
         }
         return $isOk;

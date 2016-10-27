@@ -7,7 +7,8 @@
  * NAME: exemplaire.php
  */
 
-class Exemplaire extends Model{
+class Exemplaire extends Model
+{
     public $id;
     var $table = "exemplaire";
     
@@ -18,26 +19,27 @@ class Exemplaire extends Model{
     *  vérifie la/les donnée(s) passée(s) en argument
     *  @param array $data donnée(s) à vérifier
     **/
-    public function verifications($data) {
-        $isOk = TRUE;
+    public function verifications($data)
+    {
+        $isOk = true;
         $i = 1;
-        foreach($data as $key => $value){           
-            if(!empty($data[$key]['prix_vente_euros'])){
-                if(!$this->isPosDec($data[$key]['prix_vente_euros'])){
+        foreach ($data as $key => $value) {
+            if (!empty($data[$key]['prix_vente_euros'])) {
+                if (!$this->isPosDec($data[$key]['prix_vente_euros'])) {
                     $_SESSION["info"] = "le prix de l'exemplaire numéro ".$i." est invalide";
-                    $isOk = FALSE;
+                    $isOk = false;
                 }
             }
-            if(!empty($data[$key]['montant_frais_de_port'])){
-                if(!$this->isPosDec($data[$key]['montant_frais_de_port'])){
+            if (!empty($data[$key]['montant_frais_de_port'])) {
+                if (!$this->isPosDec($data[$key]['montant_frais_de_port'])) {
                     $_SESSION["info"] = "le montant des frais de port de l'exemplaire numéro ".$i." est invalide";
-                    $isOk = FALSE;
+                    $isOk = false;
                 }
             }
-            if(!empty($data[$key]['date_vente'])){
-                if(!$this->isDateFr($data[$key]['date_vente'])){
+            if (!empty($data[$key]['date_vente'])) {
+                if (!$this->isDateFr($data[$key]['date_vente'])) {
                     $_SESSION["info"] = "la date de l'exemplaire numéro ".$i." est invalide";
-                    $isOk = FALSE;
+                    $isOk = false;
                 }
             }
             $i++;

@@ -7,7 +7,8 @@
  * NAME: label.php
  */
 
-class Label extends Model{
+class Label extends Model
+{
     public $id;
 }
 

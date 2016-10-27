@@ -25,21 +25,23 @@ class Model
     *  instancie le model demandé et permet son utilisation sous forme d'objet  
     *  @param string $name nom du model à instancier
     */
-    protected function loadModel($name){
+    protected function loadModel($name)
+    {
         require_once(ROOT.'/model/'.strtolower($name).'.php');
         $this->$name = new $name();
     }
 	
 	// instancie le(s) model(s) utile(s) et assigne les données passées en POST à un tableau $this->data
-    function __construct(){
-        if(isset($_POST)){
+    function __construct()
+    {
+        if (isset($_POST)) {
             $this->data = $_POST;
         }
-        if(isset($_FILES)){
+        if (isset($_FILES)) {
             $this->files = $_FILES;
         }
-        if(isset($this->models)){
-            foreach($this->models as $value){
+        if (isset($this->models)) {
+            foreach($this->models as $value) {
                 $this->loadModel($value);
             }
         }
@@ -49,7 +51,8 @@ class Model
     *  hachage du mot de passe 
     *  @param string|int $mdp mot de passe à hacher
     */
-    protected function hashPsw($mdp){
+    protected function hashPsw($mdp)
+    {
         global $db;
         $mdpSecure = password_hash($mdp, PASSWORD_DEFAULT);
         return $db->quote($mdpSecure);
@@ -60,29 +63,30 @@ class Model
     *  @param string $ident identifiant à vérifier
     *  @param string $mdp mot de passe à vérifier 
     **/
-    public function verifLog($ident,$mdp) {
+    public function verifLog($ident, $mdp)
+    {
         global $db;
         $ident = $this->securite_bdd($ident);
         $sql = "SELECT * FROM admin WHERE identifiant = :ident AND ".$this->notArchive;
         $pdoObj = $db->prepare($sql);
         $pdoObj->bindParam(':ident', $ident, PDO::PARAM_STR);
         $pdoObj->execute();
-        if($pdoObj->rowCount()){
+        if ($pdoObj->rowCount()) {
             $infos = $pdoObj->fetch();
             $pdoObj->closeCursor();
-            if (password_verify($mdp, $infos["mot_de_passe"])){
+            if (password_verify($mdp, $infos["mot_de_passe"])) {
                 $_SESSION['mais qui cela peut-il bien être ?'] = $infos["nom"];
-                if(isset($_SESSION['infoLog'])){
+                if (isset($_SESSION['infoLog'])) {
                     unset($_SESSION['infoLog']);
                 }
-                return TRUE;
+                return true;
             } else {
                 $_SESSION['infoLog'] = "mot de passe incorrect";
-                return FALSE;                
+                return false;
             }
         } else {
             $_SESSION['infoLog'] = "identifiant incorrect";
-            return FALSE;            
+            return false;
         }
     }
 /*------------------------------------------------------------------------------utilisation d'une adresse pour iframe google maps-------------------------------------------*/
@@ -90,7 +94,8 @@ class Model
     *  permet l'utilisation des adresse présentent en base de données dans l'iframe google maps
     *  @param string $address adresse à formater
     */
-    public function adresseGMaps($address){
+    public function adresseGMaps($address)
+    {
         $formatAd = str_replace(' ','+',$address);
         return $formatAd; 
     }
@@ -99,7 +104,8 @@ class Model
     *  remplace les caractères sensibles
     *  @param string $chaine chaine à formater
     */
-    public function noSensChars($chaine){
+    public function noSensChars($chaine)
+    {
         $sensChars = array( '' => array('°'),
                            ' ' => array('#'),
                            ':' => array('/'),
@@ -121,7 +127,7 @@ class Model
                            'C' => array('Ç'),
                            'N' => array('Ñ'));
         
-        foreach ($sensChars as $key => $value){
+        foreach ($sensChars as $key => $value) {
             $chaine = str_replace($value,$key,$chaine);
         }               
         return $chaine; 
@@ -131,17 +137,20 @@ class Model
     *  convertie une date au format français
     *  @param date $date la date à convertir
     */
-    public function dateFr($date){ 
+    public function dateFr($date)
+    {
         setlocale (LC_TIME, 'fr_FR');  
         date_default_timezone_set("Europe/Paris");
         mb_internal_encoding("UTF-8");
         return strftime('%d-%m-%Y',strtotime($date));
     }
+
     /**
     *  convertie une date au format americain
     *  @param date $date la date à convertir
     */
-    public function dateUs($date){ 
+    public function dateUs($date)
+    {
         setlocale (LC_TIME, 'en_US');  
         date_default_timezone_set("America/Los_Angeles");
         mb_internal_encoding("UTF-8");
@@ -149,111 +158,136 @@ class Model
     }
 /*------------------------------------------------------------------------------vérifications de données--------------------------------------------------------------------*/    
     // vérifie si $data est un nombre entier positif
-    public function isPosNum($data){
-        if(ctype_digit($data) && $data >= 0){
-            return TRUE;
+    public function isPosNum($data)
+    {
+        if (ctype_digit($data) && $data >= 0) {
+            return true;
         } else {
-            return FALSE;
+            return false;
         }
     }
+
     // vérifie si $data est un nombre décimal positif
-    public function isPosDec($data){
-        if(is_numeric($data) && $data >= 0){
-            return TRUE;
+    public function isPosDec($data)
+    {
+        if (is_numeric($data) && $data >= 0) {
+            return true;
         } else {
-            return FALSE;
+            return false;
         }
     }
+
     // vérifie si $mail est une adresse mail valide
-    public function isEmail($mail){
+    public function isEmail($mail)
+    {
         $regex = '/([a-z0-9_]+|[a-z0-9_]+\.[a-z0-9_]+)@(([a-z0-9]|[a-z0-9]+\.[a-z0-9]+)+\.([a-z]{2,4}))/i';
-        if(preg_match($regex,$mail)){
-            return TRUE;
+        if (preg_match($regex,$mail)) {
+            return true;
         } else {
-            return FALSE;
+            return false;
         }  
     }
+
     // vérifie si $url est une url valide
-    public function isValidUrl($url){
-        if(filter_var($url, FILTER_VALIDATE_URL, FILTER_FLAG_PATH_REQUIRED)){
-            return TRUE;
+    public function isValidUrl($url)
+    {
+        if (filter_var($url, FILTER_VALIDATE_URL, FILTER_FLAG_PATH_REQUIRED)) {
+            return true;
         } else {
-            return FALSE;
+            return false;
         }
     }
+
     // vérifie si $date est une date valide au format français
-    public function isDateFr($date){
+    public function isDateFr($date)
+    {
         $regex = '#^([0-9]{2})([-])([0-9]{2})\2([0-9]{4})$#';
-        if(preg_match($regex, $date, $m) && checkdate($m[3], $m[1], $m[4])){
-            return TRUE;
+        if (preg_match($regex, $date, $m) && checkdate($m[3], $m[1], $m[4])) {
+            return true;
         } else {
-            return FALSE;
+            return false;
         }
     }
+
     // vérifie si $date est une date valide au format français ou americain
-    public function isDateUsFr($date){
+    public function isDateUsFr($date)
+    {
         $regExUs = '#^([0-9]{4})([-])([0-9]{2})\2([0-9]{2})$#';
-        if($this->isDateFr($date) || preg_match($regExUs, $date, $mark) && checkdate($mark[3], $mark[4], $mark[1])){
-            return TRUE;
+        if ($this->isDateFr($date) || preg_match($regExUs, $date, $mark) && checkdate($mark[3], $mark[4], $mark[1])) {
+            return true;
         } else {
-            return FALSE;
+            return false;
         }
     }
+
     // vérifie si $file porte une extension comprise dans le tableau $validExt
-    public function extImgOk($file){
+    public function extImgOk($file)
+    {
         $name = basename($file);
         $ext = pathinfo($name,PATHINFO_EXTENSION);
         $validExt = array("jpg", "jpeg", "png");
-        return in_array($ext, $validExt, TRUE);
+        return in_array($ext, $validExt, true);
     }
+
     // vérifie si $file porte une extension comprise dans le tableau $validExt
-    public function extRarOk($file){
+    public function extRarOk($file)
+    {
         $name = basename($file);
         $ext = pathinfo($name,PATHINFO_EXTENSION);
         $validExt = array("rar");
-        return in_array($ext, $validExt, TRUE);
+        return in_array($ext, $validExt, true);
     }
+
     // vérifie si $file est une image
-    public function isImage($file){
-        $imgOk = TRUE;
+    public function isImage($file)
+    {
+        $imgOk = true;
         $validTypes = array(IMAGETYPE_JPEG, IMAGETYPE_PNG);
         $type = @getImageSize($file)[2];
-        if(!in_array($type, $validTypes)){
-            $imgOk = FALSE;
+        if (!in_array($type, $validTypes)) {
+            $imgOk = false;
         }
         return $imgOk;
     }
+
     // vérifie si $type est un type mime correspondant à un .rar
-    public function isRar($type) {
+    public function isRar($type)
+    {
         $validTypes = array("application/x-rar-compressed", "application/octet-stream");
         return in_array($type, $validTypes);
     }
+
     // détecte les caractères sensibles dans la chaine $string
-    public function contSensChars($string){
-        $sensChars = FALSE;
+    public function contSensChars($string)
+    {
+        $sensChars = false;
         foreach ($this->sensChars as $value) {
-            if(strrpos($string, $value) !== FALSE){
-                $sensChars = TRUE;
+            if (strrpos($string, $value) !== false) {
+                $sensChars = true;
             }
         }
         return $sensChars;
     }
+
     // vérifie si $code est un code valide
-    public function refCodeOk($code) {
+    public function refCodeOk($code)
+    {
         $regEx = '#^T{3}([0-9]{2,4})$#';
-        if(preg_match($regEx,$code)){
-            return TRUE;
+        if (preg_match($regEx,$code)) {
+            return true;
         } else {
-            return FALSE;
+            return false;
         } 
     }
+
     // vérifie si $longueur est un format de longueur de K7 valide
-    public function longueurOk($longueur){
+    public function longueurOk($longueur)
+    {
         $regEx = '#^C[0-9]{2,3}$#';
-        if(preg_match($regEx,$longueur)){
-            return TRUE;
+        if (preg_match($regEx,$longueur)) {
+            return true;
         } else {
-            return FALSE;
+            return false;
         } 
     }
 /*------------------------------------------------------------------------------securiser les données à destination/en provenance de la base de données---------------------*/        
@@ -261,32 +295,37 @@ class Model
     *  securise une donnée à destination de la base de données
     *  @param string|int|dec $data donnée à securiser
     */
-    public function securite_bdd($data){
-        if(ctype_digit($data)){
+    public function securite_bdd($data)
+    {
+        if (ctype_digit($data)) {
             $data = intval($data);
         } else {
             $data = addcslashes($data, '%');
         }
         return $data;
     }
+
    /**
     *  securise la restitution des données entrées en base de données grâce à un wysiwyg
     *  @param string $value chaine contenant les données à securiser
     */
-	protected function securiteWys($value){
+	protected function securiteWys($value)
+    {
         include_once(ROOT."plugIn/htmLawed/htmLawed.php");
         $elements = 'a, b, strong, i, em, li, ol, ul, br, span, p, hr, h1, h2, h3, h4, h5, h6, pre';
         return htmLawed($value, array('safe' => 1, 'elements' => $elements));   
     }
+
    /**
     *  applique htmlentities aux éléments d'un tableau ou appelle $this->securiteWys() en fonction de la clef
     *  @param array $array tableau contenant les éléments à securiser
     */
-    public function securiteHtml($array) {
+    public function securiteHtml($array)
+    {
         $clefsWys = array('description_event', 'description', 'bio'); // les éléments correspondent aux noms des champs dont les données ont été insérées à l'aide d'un wysiwyg
             foreach ($array as $k => $v) {
                 foreach ($array[$k] as $key => &$value) {                    
-                    if(in_array($key, $clefsWys)){ 
+                    if (in_array($key, $clefsWys)) {
                         $value = $this->securiteWys($value);
                     } else {
                         $value = htmlentities($value);
@@ -301,116 +340,123 @@ class Model
     *  lit une ligne dans la base de données par rapport à l'id du model instancié
     *  @param string $fields liste des champs à récupérer
     **/
-    public function read($fields = "*"){
+    public function read($fields = "*")
+    {
         global $db;
         $fields = $this->securite_bdd($fields);
         $id = $this->securite_bdd($this->id);
         $sql = "SELECT ".$fields." FROM ".$this->table." WHERE ".$this->notArchive." AND id_".$this->table." = :id";
         $pdoObj = $db->prepare($sql);
         $pdoObj->bindParam(':id', $id, PDO::PARAM_INT);
-        if($pdoObj->execute()){
+        if ($pdoObj->execute()) {
             $infos = $pdoObj->fetch();
             $pdoObj->closeCursor();
             $clefsWys = array('description_event', 'description', 'bio'); // les éléments correspondent aux noms des champs dont les données ont été insérées à l'aide d'un wysiwyg
-            foreach ($infos as $key => $value){
-                if(in_array($key, $clefsWys)){ 
+            foreach ($infos as $key => $value) {
+                if (in_array($key, $clefsWys)) {
                         $this->$key = $this->securiteWys($value);
                     } else {
                         $this->$key = htmlentities($value);
                     }                                            
             };
-            return TRUE;
+            return true;
         } else {
-            return FALSE;
+            return false;
         }
     }
+
    /**
     *  récupère une ou plusieurs ligne(s) dans la base de données par rapport au model instancié
     *  @param array $data contient les conditions, les champs, l'ordre et la limitation
     **/
-    public function findAll($data = array()){
+    public function findAll($data = array())
+    {
         global $db;
         $fields = "*";
         $conditions = "1 = 1";        
         $order = "id_".$this->table." DESC";
         $limit = "";
-        if(isset($data["fields"])){
+        if (isset($data["fields"])) {
             $fields = $this->securite_bdd($data['fields']);
         }
-        if(isset($data["conditions"])){
+        if (isset($data["conditions"])) {
             $conditions = $this->securite_bdd($data['conditions']);
         }
-        if(isset($data["order"])){
+        if (isset($data["order"])) {
             $order = $this->securite_bdd($data['order']);
         }
-        if(isset($data["limit"])){
+        if (isset($data["limit"])) {
             $limit = $this->securite_bdd($data['limit']);
             $limit = " LIMIT ".$limit;
         }        
         $sql = "SELECT ".$fields." FROM ".$this->table." WHERE ".$conditions." AND ".$this->notArchive." ORDER BY ".$order.$limit;
         $pdoObj = $db->prepare($sql);
-        if($pdoObj->execute()){
+        if ($pdoObj->execute()) {
             $tabFind = array();
-            while ($infos = $pdoObj->fetch()){
+            while ($infos = $pdoObj->fetch()) {
                 $tabFind[] = $infos;
             }
             $pdoObj->closeCursor();           
             return $this->securiteHtml($tabFind);
         } else {
-            return FALSE;
+            return false;
         }
     }
+
    /**
     *  recherche une/des donnée(s) par rapport au model instancié, permet l'utilisation des %
     *  @param array $data contient le champ dans lequel effectuer la recherche et la donnée à chercher
     */
-    public function search($data= array()){
+    public function search($data= array())
+    {
         global $db;
         $field = 1;
         $what = 1;
-        if(isset($data["field"])){
+        if (isset($data["field"])) {
             $field = $this->securite_bdd($data['field']);
         }
-        if(isset($data["what"])){
+        if (isset($data["what"])) {
             $what = $this->securite_bdd($data['what']);
         }
         $sql = "SELECT * FROM ".$this->table." WHERE ".$field." LIKE '%".$what."%' AND ".$this->notArchive." ORDER BY id_".$this->table." DESC";
         $pdoObj = $db->prepare($sql);
-        if($pdoObj->execute()){
+        if ($pdoObj->execute()) {
             $tabFind = array();
-            while ($infos = $pdoObj->fetch()){
+            while ($infos = $pdoObj->fetch()) {
                 $tabFind[] = $infos;
             }
             $pdoObj->closeCursor();
-            if(empty($tabFind)){
-                return FALSE;
+            if (empty($tabFind)) {
+                return false;
             } else {
                 return $this->securiteHtml($tabFind);
             }            
         } else {
-            return FALSE;
+            return false;
         }
     }
+
    /**
     *  sauvegarde ou met à jour les données passées en paramètre dans la base de données
     *  @param array $data données à sauvegarder
     **/
-    public function save($data){
+    public function save($data)
+    {
         global $db;
-        if(isset($data["id_".$this->table]) && !empty($data["id_".$this->table]) && $this->exist("id_".$this->table,$data["id_".$this->table])){
+        if (isset($data["id_".$this->table]) && !empty($data["id_".$this->table]) && $this->exist("id_".$this->table,$data["id_".$this->table])) {
             $id = $this->securite_bdd($data["id_".$this->table]);
             $sql = "UPDATE ".$this->table." SET";
-            foreach ($data as $key => $value){
+            foreach ($data as $key => $value) {
                 $key = $this->securite_bdd($key);
                 $value = $this->securite_bdd($value);
                 // valable si il existe une colonne "$this->psw" dans la table 
-                if($key === $this->psw){
+                if ($key === $this->psw) {
                     $v = $this->hashPsw($value);
                 } else {
                 // dans les autres cas
                     $v = $db->quote($value);
                 } 
-                if($key != "id_$this->table") {                    
+                if ($key != "id_$this->table") {
                     $sql .= " ".$key." = ".$v.",";
                 }
             };
@@ -421,15 +467,15 @@ class Model
         } else {
             $sql = "INSERT INTO ".$this->table." (";
             unset($data["id_".$this->table]);
-            foreach ($data as $key => $value){
+            foreach ($data as $key => $value) {
                     $key = $this->securite_bdd($key);
                     $sql .= $key.",";
             };
             $sql = substr($sql, 0,-1);
             $sql .= ") VALUES (";
-            foreach ($data as $key => $value){
+            foreach ($data as $key => $value) {
                 $value = $this->securite_bdd($value);
-                if($key === $this->psw){
+                if ($key === $this->psw) {
                     $v = $this->hashPsw($value);
                 } else {
                     $v = $db->quote($value);
@@ -440,42 +486,46 @@ class Model
             $sql .= ")";
             $pdoObj = $db->prepare($sql);
         }        
-        if($pdoObj->execute()){
-            if(!isset($data["id_".$this->table])){
+        if ($pdoObj->execute()) {
+            if (!isset($data["id_".$this->table])) {
                 $this->id = $db->lastInsertId();
-            } else if ($this->exist("id_".$this->table,$data["id_".$this->table])){
+            } elseif ($this->exist("id_".$this->table,$data["id_".$this->table])) {
                 $this->id = $this->securite_bdd($data["id_".$this->table]);
             }
             $_SESSION["infoSave"] = "Sauvegarde réussie";
-            return TRUE;
+            return true;
         } else {
             $_SESSION["infoSave"] = "La sauvegarde a échoué";
-            return FALSE;
+            return false;
         }       
     }
+
    /**
     *  efface une ligne dans la base de données correspondant à l'id du model instancié
     *  @param string|int $id id de la ligne que l'on souhaite effacer
     **/
-    public function delete($id = NULL){
+    public function delete($id = null)
+    {
         global $db;
         $id = $this->securite_bdd($id);
-        if(!$id){
+        if (!$id) {
             $id = $this->securite_bdd($this->id);
         }
         $sql = "DELETE FROM ".$this->table." WHERE id_".$this->table." = :id";
         $pdoObj = $db->prepare($sql);
         $pdoObj->bindParam(':id', $id, PDO::PARAM_INT);
         return $pdoObj->execute();
-    }    
+    }
+
    /**
     *  archive une ligne dans la base de données correspondant à l'id du model instancié
     *  @param string|int $id id de la ligne que l'on souhaite archiver
     **/
-    public function archive($id = NULL){
+    public function archive($id = null)
+    {
         global $db;
         $id = $this->securite_bdd($id);
-        if(!$id){
+        if (!$id) {
             $id = $this->securite_bdd($this->id);
         }
         $sql = "UPDATE ".$this->table." SET suppr = 1 WHERE id_".$this->table." = :id";
@@ -483,12 +533,14 @@ class Model
         $pdoObj->bindParam(':id', $id, PDO::PARAM_INT);
         return $pdoObj->execute();
     }
+
    /**
     *  vérifie l'existance d'une donnée dans un champ du model instancié
     *  @param string $field le champ dans lequel on cherche la donnée 
     *  @param string|int $data la donnée dont on veut vérifier la présence  
     **/        
-    public function exist($field,$data){
+    public function exist($field, $data)
+    {
         global $db;
         $field = $this->securite_bdd($field);
         $data = $this->securite_bdd($data);
@@ -497,36 +549,38 @@ class Model
         $pdoObj = $db->prepare($sql);
         $pdoObj->bindParam(':data', $data, PDO::PARAM_STR);
         $pdoObj->execute();
-        if($pdoObj->rowCount()){
-            return TRUE;
+        if ($pdoObj->rowCount()) {
+            return true;
         } else {
-            return FALSE;
+            return false;
         }
-    }   
+    }
+
    /**
     *  récupére la valeur maximum/minimum pour la colonne choisie de la table instanciée
     *  @param string $col permet de spécifier la colonne désirée
     *  @param string $maxMin permet de spécifier ce que l'on décide de récupérer, la valeur max ou la valeur min
     **/
-    public function getDataMaxMin($col = NULL, $maxMin = "MAX"){
+    public function getDataMaxMin($col = null, $maxMin = "MAX")
+    {
         global $db;
         $alias = "max";
-        if(!$col){
+        if (!$col) {
             $col = "id_".$this->table;
         }
-        if($maxMin !== "MAX"){
+        if ($maxMin !== "MAX") {
             $maxMin = "MIN";
             $alias = "min";
         }
         $sql = "SELECT ".$maxMin."(".$col.") AS ".$alias." FROM ".$this->table." WHERE ".$this->notArchive;
         $pdoObj = $db->prepare($sql);
         $success = $pdoObj->execute();
-        if($success){
+        if ($success) {
             $colMaxMin = $pdoObj->fetch();
             $pdoObj->closeCursor();
             return $colMaxMin;
         } else {
-            return FALSE;
+            return false;
         }
     }
 /*------------------------------------------------------------------------------resize image--------------------------------------------------------------------------------*/
@@ -556,8 +610,8 @@ class Model
         $quality            = 100,
         $cropFromTop        = false
     ) {
-        if ( $height <= 0 && $width <= 0 ) return false;
-        if ( $file === null && $string === null ) return false;
+        if ($height <= 0 && $width <= 0) return false;
+        if ($file === null && $string === null) return false;
         # Setting defaults and meta
         $info                         = $file !== null ? getimagesize($file) : getimagesizefromstring($string);
         $image                        = '';
@@ -572,8 +626,7 @@ class Model
             else                    $factor = min( $width / $width_old, $height / $height_old );
             $final_width  = round( $width_old * $factor );
             $final_height = round( $height_old * $factor );
-        }
-        else {
+        } else {
             $final_width = ( $width <= 0 ) ? $width_old : $width;
             $final_height = ( $height <= 0 ) ? $height_old : $height;
             $widthX = $width_old / $width;
@@ -583,15 +636,15 @@ class Model
             $cropHeight = ($height_old - $height * $x) / 2;
         }
         # Loading image to memory according to type
-        switch ( $info[2] ) {
+        switch ($info[2]) {
             case IMAGETYPE_JPEG:  $file !== null ? $image = imagecreatefromjpeg($file) : $image = imagecreatefromstring($string);  break;
-            case IMAGETYPE_GIF:   $file !== null ? $image = imagecreatefromgif($file)  : $image = imagecreatefromstring($string);  break;
+            case IMAGETYPE_GIF:   $file !== null ? $image = imagecreatefromgif ($file)  : $image = imagecreatefromstring($string);  break;
             case IMAGETYPE_PNG:   $file !== null ? $image = imagecreatefrompng($file)  : $image = imagecreatefromstring($string);  break;
             default: return false;
         }
         # This is the resizing/resampling/transparency-preserving magic
-        $image_resized = imagecreatetruecolor( $final_width, $final_height );
-        if ( ($info[2] == IMAGETYPE_GIF) || ($info[2] == IMAGETYPE_PNG) ) {
+        $image_resized = imagecreatetruecolor($final_width, $final_height);
+        if (($info[2] == IMAGETYPE_GIF) || ($info[2] == IMAGETYPE_PNG)) {
             $transparency = imagecolortransparent($image);
             $palletsize = imagecolorstotal($image);
             if ($transparency >= 0 && $transparency < $palletsize) {
@@ -599,31 +652,30 @@ class Model
                 $transparency       = imagecolorallocate($image_resized, $transparent_color['red'], $transparent_color['green'], $transparent_color['blue']);
                 imagefill($image_resized, 0, 0, $transparency);
                 imagecolortransparent($image_resized, $transparency);
-            }
-            elseif ($info[2] == IMAGETYPE_PNG) {
+            } elseif ($info[2] == IMAGETYPE_PNG) {
                 imagealphablending($image_resized, false);
                 $color = imagecolorallocatealpha($image_resized, 0, 0, 0, 127);
                 imagefill($image_resized, 0, 0, $color);
                 imagesavealpha($image_resized, true);
             }
         }
-        if ($cropFromTop){
+        if ($cropFromTop) {
             $cropHeightFinal = 0;
-        }else{
+        } else {
             $cropHeightFinal = $cropHeight;
         }
         imagecopyresampled($image_resized, $image, 0, 0, $cropWidth, $cropHeightFinal, $final_width, $final_height, $width_old - 2 * $cropWidth, $height_old - 2 * $cropHeight);
         # Taking care of original, if needed
-        if ( $delete_original ) {
+        if ($delete_original) {
             if ( $use_linux_commands ) exec('rm '.$file);
             else @unlink($file);
         }
         # Preparing a method of providing result
-        switch ( strtolower($output) ) {
+        switch (strtolower($output)) {
             case 'browser':
                 $mime = image_type_to_mime_type($info[2]);
                 header("Content-type: $mime");
-                $output = NULL;
+                $output = null;
                 break;
             case 'file':
                 $output = $file;
@@ -635,8 +687,8 @@ class Model
                 break;
         }
         # Writing image according to type to the output destination and image quality
-        switch ( $info[2] ) {
-            case IMAGETYPE_GIF:   imagegif($image_resized, $output);    break;
+        switch ($info[2]) {
+            case IMAGETYPE_GIF:   imagegif ($image_resized, $output);    break;
             case IMAGETYPE_JPEG:  imagejpeg($image_resized, $output, $quality);   break;
             case IMAGETYPE_PNG:
                 $quality = 9 - (int)((0.9*$quality)/10.0);
@@ -652,13 +704,14 @@ class Model
     *  @param string $fichier nom du fichier à telecharger
     *  @param string $sousDoss nom du sous-dossier contenant le fichier
     */
-    public function telecharger_fichier($fichier, $sousDoss = ""){ 
-        if($sousDoss === ""){
+    public function telecharger_fichier($fichier, $sousDoss = "")
+    {
+        if ($sousDoss === "") {
             $chemin = ROOT.'fichiers/'.$fichier;
         } else {
             $chemin = ROOT.'fichiers/'.$sousDoss.'/'.$fichier;
         }
-        if($this->exist("download", $fichier) && file_exists($chemin) && strpos($fichier, '/') === FALSE && strpos($fichier, '.') !== 0){    
+        if ($this->exist("download", $fichier) && file_exists($chemin) && strpos($fichier, '/') === false && strpos($fichier, '.') !== 0) {
             header('Content-Description: File Transfer');
             header('Content-Type: application/octet-stream');
             header('Content-Disposition: attachment; filename='.basename($chemin));
@@ -679,9 +732,10 @@ class Model
             $this->save($tab);
             exit;  
         } else {
-            return FALSE;
+            return false;
         }
     }
+
    /**
     *  lance l'upload d'un fichier
     *  @param string $fichierTemp nom du fichier temporaire
@@ -689,14 +743,15 @@ class Model
     *  @param string $dossier nom du dossier qui devra contenir le sous-dossier ou le fichier
     *  @param string $sousDoss nom du sous-dossier qui devra contenir le fichier
     */
-    public function upload_file($fichierTemp, $fichier, $dossier, $sousDoss = NULL){
-        if(!preg_match('#[\x00-\x1F\x7F-\x9F/\\\\]#', $fichier)){
-            if(!$sousDoss){
+    public function upload_file($fichierTemp, $fichier, $dossier, $sousDoss = null)
+    {
+        if (!preg_match('#[\x00-\x1F\x7F-\x9F/\\\\]#', $fichier)) {
+            if (!$sousDoss) {
                 $chemin = ROOT.$dossier.'/';
             } else {
                 $chemin = ROOT.$dossier.'/'.$sousDoss.'/';
             }
-            if($this->isImage($fichierTemp)){
+            if ($this->isImage($fichierTemp)) {
                 $resizeFileName = explode('.', $fichier);
                 $resizeFileName = $resizeFileName[0].'-resize.'.$resizeFileName[1];
                 // chemin pour stocker l'image redimmensionnée
@@ -705,28 +760,30 @@ class Model
                 // redimensions et stockage des images
                 $uploadResizeOk = $this->smart_resize_image($fichierTemp , null, 150, 150, true, $resizedFilePath, false, false, 100);
             } else {
-                $uploadResizeOk = TRUE;
+                $uploadResizeOk = true;
             }
             $uploadOk = move_uploaded_file($fichierTemp, $chemin.$fichier);
             return ($uploadOk && $uploadResizeOk);
         } else {
-            return FALSE;
+            return false;
         }
     }
+
    /**
     *  efface un fichier
     *  @param string $fichier nom du fichier à effacer
     *  @param string $dossier nom du dossier qui devra contenir le sous-dossier ou le fichier
     *  @param string $sousDoss nom du sous-dossier qui devra contenir le fichier
     */
-    public function delete_file($fichier, $dossier, $sousDoss = NULL){
-        if(!$sousDoss){
+    public function delete_file($fichier, $dossier, $sousDoss = null)
+    {
+        if (!$sousDoss) {
             $chemin = ROOT.$dossier.'/';
         } else {
             $chemin = ROOT.$dossier.'/'.$sousDoss.'/';
         }
-        if(file_exists($chemin)){
-            if($this->isImage($chemin.$fichier)){
+        if (file_exists($chemin)) {
+            if ($this->isImage($chemin.$fichier)) {
                 $resizeFileName = explode('.', $fichier);
                 $resizeFileName = $resizeFileName[0].'-resize.'.$resizeFileName[1];
                 $resizedFilePath = $chemin.$resizeFileName;
@@ -735,7 +792,7 @@ class Model
                 return unlink($chemin.$fichier);
             }
         } else {
-            return FALSE;
+            return false;
         }
     }
 }

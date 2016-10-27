@@ -7,7 +7,8 @@
  * NAME: frais_de_port.php
  */
 
-class Frais_de_port extends Model{
+class Frais_de_port extends Model
+{
     public $id;
     var $table = "frais_de_port";
 }

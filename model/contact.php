@@ -7,7 +7,8 @@
  * NAME: contact.php
  */
 
-class Contact extends Model{
+class Contact extends Model
+{
     public $id;
     var $table = "contact";
 }

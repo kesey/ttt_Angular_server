@@ -7,7 +7,8 @@
  * NAME: client.php
  */
 
-class Client extends Model{
+class Client extends Model
+{
     public $id;
     var $table = "client";
     
@@ -18,26 +19,27 @@ class Client extends Model{
     *  vérifie la/les donnée(s) passée(s) en argument
     *  @param array $data donnée(s) à vérifier
     **/
-    public function verifications($data) {               
-        $isOk = TRUE;
-        if(empty($data["nom_client"])){            
+    public function verifications($data)
+    {
+        $isOk = true;
+        if (empty($data["nom_client"])) {
             $_SESSION["info"] = "Veuillez renseigner un nom";
-            $isOk = FALSE;
-        } else if(empty($data["id_client"])){
-            if($this->exist('nom_client', $data["nom_client"])){
+            $isOk = false;
+        } elseif (empty($data["id_client"])) {
+            if ($this->exist('nom_client', $data["nom_client"])) {
                 $_SESSION["info"] = "Ce client existe déjà";
-                $isOk = FALSE;
+                $isOk = false;
             }
         }
-        if(!empty($data["mail_client"])){
-            if(!$this->isEmail($data["mail_client"])){
+        if (!empty($data["mail_client"])) {
+            if (!$this->isEmail($data["mail_client"])) {
                 $_SESSION["info"] = "L'adresse mail n'est pas valide";
-                $isOk = FALSE;
+                $isOk = false;
             }
-            if(empty($data["id_client"])){
-                if($this->exist('mail_client', $data["mail_client"])){
+            if (empty($data["id_client"])) {
+                if ($this->exist('mail_client', $data["mail_client"])) {
                     $_SESSION["info"] = "Cette adresse mail existe déjà";
-                    $isOk = FALSE;
+                    $isOk = false;
                 }
             }
         }

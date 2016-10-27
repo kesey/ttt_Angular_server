@@ -7,7 +7,8 @@
  * NAME: produire.php
  */
 
-class Produire extends Model{
+class Produire extends Model
+{
     public $id;
     var $table = "produire";
     
@@ -15,10 +16,11 @@ class Produire extends Model{
     *  efface une/des ligne(s) dans la table produire
     *  @param string|int $idArtiste contient l'id_artiste 
     */
-    public function deleteProd($idArtiste = NULL){
+    public function deleteProd($idArtiste = null)
+    {
         global $db;
         $conditions = "1 = 0";
-        if($idArtiste){
+        if ($idArtiste) {
             $idArt = $this->securite_bdd($idArtiste);
             $conditions = "id_artiste = :idArtiste";
         }
@@ -32,12 +34,13 @@ class Produire extends Model{
     *  vérifie que la/les production(s) d'un artiste a/ont bien été renseignée(s)
     *  @param array $data tableau contenant la/les production(s) d'un artiste 
     */
-    public function verifProd($data = NULL){
-        if(!$data[0]){
+    public function verifProd($data = null)
+    {
+        if (!$data[0]) {
             $_SESSION["info"] = "Veuillez renseigner la/les production(s) de cet artiste";
-            return FALSE;
+            return false;
         } else {            
-            return TRUE;
+            return true;
         }         
     }
 }

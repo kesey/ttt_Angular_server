@@ -8,10 +8,9 @@
  */
 
 session_start();
-try{
+try {
     $db = new PDO("mysql:host=localhost;dbname=thirdtypetapes", "ttt", "A/B/G/G/D/", array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
-}
-catch(Exception $e){
+} catch (Exception $e) {
     die('Error : '.$e->getMessage());
 }
 
