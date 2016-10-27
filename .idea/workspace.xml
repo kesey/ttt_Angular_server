@@ -2,20 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7572c2c6-a1bf-45db-9f85-df761a7bb598" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/core.php" afterPath="$PROJECT_DIR$/core/core.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/model.php" afterPath="$PROJECT_DIR$/core/model.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/index.php" afterPath="$PROJECT_DIR$/index.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/model/admin.php" afterPath="$PROJECT_DIR$/model/admin.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/model/artiste.php" afterPath="$PROJECT_DIR$/model/artiste.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/model/cassette.php" afterPath="$PROJECT_DIR$/model/cassette.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/model/client.php" afterPath="$PROJECT_DIR$/model/client.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/model/contact.php" afterPath="$PROJECT_DIR$/model/contact.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/model/event.php" afterPath="$PROJECT_DIR$/model/event.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/model/exemplaire.php" afterPath="$PROJECT_DIR$/model/exemplaire.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/model/frais_de_port.php" afterPath="$PROJECT_DIR$/model/frais_de_port.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/model/label.php" afterPath="$PROJECT_DIR$/model/label.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/model/produire.php" afterPath="$PROJECT_DIR$/model/produire.php" />
     </list>
     <ignored path="Third_Type_Tapes_2_server.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -37,11 +24,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="index.php" pinned="false" current-in-tab="false">
+      <file leaf-file-name="index.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/index.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-14.384615">
-              <caret line="22" column="29" selection-start-line="22" selection-start-column="29" selection-end-line="22" selection-end-column="29" />
+            <state vertical-scroll-proportion="0.90586144">
+              <caret line="84" column="59" selection-start-line="84" selection-start-column="59" selection-end-line="84" selection-end-column="59" />
               <folding />
             </state>
           </provider>
@@ -50,7 +37,7 @@
       <file leaf-file-name="core.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/core/core.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-7.1923075">
+            <state vertical-scroll-proportion="0.0">
               <caret line="11" column="100" selection-start-line="11" selection-start-column="98" selection-end-line="11" selection-end-column="100" />
               <folding />
             </state>
@@ -60,7 +47,7 @@
       <file leaf-file-name="model.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/core/model.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-21.076923">
+            <state vertical-scroll-proportion="0.0">
               <caret line="506" column="37" selection-start-line="506" selection-start-column="37" selection-end-line="506" selection-end-column="37" />
               <caret line="523" column="38" selection-start-line="523" selection-start-column="38" selection-end-line="523" selection-end-column="38" />
               <caret line="563" column="45" selection-start-line="563" selection-start-column="45" selection-end-line="563" selection-end-column="45" />
@@ -77,10 +64,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="produire.php" pinned="false" current-in-tab="true">
+      <file leaf-file-name="produire.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/model/produire.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.93939394">
+            <state vertical-scroll-proportion="-20.26923">
               <caret line="31" column="4" selection-start-line="31" selection-start-column="4" selection-end-line="31" selection-end-column="4" />
               <folding>
                 <marker date="1477590746001" expanded="true" signature="600:635" placeholder="DELETE FROM ..." />
@@ -92,7 +79,7 @@
       <file leaf-file-name="link.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/model/link.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-4.576923">
+            <state vertical-scroll-proportion="0.0">
               <caret line="7" column="3" selection-start-line="7" selection-start-column="3" selection-end-line="7" selection-end-column="3" />
               <folding />
             </state>
@@ -102,7 +89,7 @@
       <file leaf-file-name="artiste.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/model/artiste.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-10.615385">
+            <state vertical-scroll-proportion="0.0">
               <caret line="142" column="5" selection-start-line="142" selection-start-column="5" selection-end-line="142" selection-end-column="5" />
               <folding>
                 <marker date="1477590303115" expanded="true" signature="1468:1741" placeholder="SELECT * FRO..${$this-&gt;table}..." />
@@ -114,7 +101,7 @@
       <file leaf-file-name="event.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/model/event.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-5.230769">
+            <state vertical-scroll-proportion="0.0">
               <caret line="8" column="0" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
               <folding />
             </state>
@@ -124,7 +111,7 @@
       <file leaf-file-name="cassette.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/model/cassette.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-0.65384614">
+            <state vertical-scroll-proportion="0.0">
               <caret line="1" column="0" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
               <folding />
             </state>
@@ -142,7 +129,6 @@
         <option value="$PROJECT_DIR$/model/link.php" />
         <option value="$PROJECT_DIR$/model/etat_exemplaire.php" />
         <option value="$PROJECT_DIR$/core/core.php" />
-        <option value="$PROJECT_DIR$/index.php" />
         <option value="$PROJECT_DIR$/model/contact.php" />
         <option value="$PROJECT_DIR$/model/frais_de_port.php" />
         <option value="$PROJECT_DIR$/model/label.php" />
@@ -154,6 +140,7 @@
         <option value="$PROJECT_DIR$/model/exemplaire.php" />
         <option value="$PROJECT_DIR$/core/model.php" />
         <option value="$PROJECT_DIR$/model/produire.php" />
+        <option value="$PROJECT_DIR$/index.php" />
       </list>
     </option>
   </component>
@@ -197,6 +184,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scratches" />
       <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
@@ -246,7 +234,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -309,11 +296,10 @@
     <editor active="true" />
     <layout>
       <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.20468432" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.20875764" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3296355" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -324,6 +310,7 @@
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3296355" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout>
@@ -702,7 +689,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.15151516">
           <caret line="5" column="34" selection-start-line="5" selection-start-column="34" selection-end-line="5" selection-end-column="34" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -734,7 +720,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/model/cassette.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.65384614">
+        <state vertical-scroll-proportion="0.0">
           <caret line="1" column="0" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
           <folding />
         </state>
@@ -742,7 +728,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/model/event.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-5.230769">
+        <state vertical-scroll-proportion="0.0">
           <caret line="8" column="0" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
           <folding />
         </state>
@@ -750,7 +736,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/model/artiste.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-10.615385">
+        <state vertical-scroll-proportion="0.0">
           <caret line="142" column="5" selection-start-line="142" selection-start-column="5" selection-end-line="142" selection-end-column="5" />
           <folding>
             <marker date="1477590303115" expanded="true" signature="1468:1741" placeholder="SELECT * FRO..${$this-&gt;table}..." />
@@ -760,7 +746,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/model/link.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-4.576923">
+        <state vertical-scroll-proportion="0.0">
           <caret line="7" column="3" selection-start-line="7" selection-start-column="3" selection-end-line="7" selection-end-column="3" />
           <folding />
         </state>
@@ -768,23 +754,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/core/core.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-7.1923075">
+        <state vertical-scroll-proportion="0.0">
           <caret line="11" column="100" selection-start-line="11" selection-start-column="98" selection-end-line="11" selection-end-column="100" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/index.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-14.384615">
-          <caret line="22" column="29" selection-start-line="22" selection-start-column="29" selection-end-line="22" selection-end-column="29" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/core/model.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-21.076923">
+        <state vertical-scroll-proportion="0.0">
           <caret line="506" column="37" selection-start-line="506" selection-start-column="37" selection-end-line="506" selection-end-column="37" />
           <caret line="523" column="38" selection-start-line="523" selection-start-column="38" selection-end-line="523" selection-end-column="38" />
           <caret line="563" column="45" selection-start-line="563" selection-start-column="45" selection-end-line="563" selection-end-column="45" />
@@ -802,11 +780,19 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/model/produire.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.93939394">
+        <state vertical-scroll-proportion="-20.26923">
           <caret line="31" column="4" selection-start-line="31" selection-start-column="4" selection-end-line="31" selection-end-column="4" />
           <folding>
             <marker date="1477590746001" expanded="true" signature="600:635" placeholder="DELETE FROM ..." />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/index.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.90586144">
+          <caret line="84" column="59" selection-start-line="84" selection-start-column="59" selection-end-line="84" selection-end-column="59" />
+          <folding />
         </state>
       </provider>
     </entry>

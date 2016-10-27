@@ -82,7 +82,7 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
 		deliver_response(400, "Invalid Request", "Invalid Object");
 	}
 } else {
-    deliver_response(301, "Moved Permanently", "Invalid Request");
+    deliver_response(301, "Moved Permanently", "Invalid URL");
 }
 
 /* $parametres = explode('/', $par);
