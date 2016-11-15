@@ -93,7 +93,12 @@ class Cassette extends Model
     {
 		$model = $this->models[0];
         if ($this->exist('id_'.$this->table,$id)) {
-            $d['cassette'] = $this->getAllInfos(array('id' => $id));            
+            $d['cassette'] = $this->getAllInfos(array('id' => $id));
+            $length = sizeof($d['cassette']);
+            for ($i = 0; $i < $length; $i++) {
+                $imgResize = explode('.', $d['cassette'][$i]['image_artiste']);
+                $d['cassette'][$i]['image_artiste_resize'] = $imgResize[0].'-resize.'.$imgResize[1];
+            }
             $d['shipInfos'] = $this->$model->findAll();
             $d['date']['min'] = $this->getDataMaxMin("date_sortie", "MIN")["min"];
             $d['date']['max'] = $this->getDataMaxMin("date_sortie", "MAX")["max"];
