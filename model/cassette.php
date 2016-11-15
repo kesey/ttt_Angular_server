@@ -118,7 +118,8 @@ class Cassette extends Model
 	// lance le telechargement d'un fichier 
     public function download()
     {
-        $this->telecharger_fichier($this->data['nomFichier']);
+        //$this->telecharger_fichier($this->data['nomFichier']);
+        return $this->data['nomFichier'];
     }
 
    /**

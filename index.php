@@ -9,7 +9,7 @@
 
 $headers = array(
 	'Access-Control-Allow-Origin' => '*',
-	'Access-Control-Allow-Methods' => 'POST, GET, OPTIONS, DELETE',
+	'Access-Control-Allow-Methods' => 'POST, GET',
 	'Access-Control-Max-Age' => '3600',
 	'Access-Control-Allow-Headers' => 'Origin, X-Requested-With, Content-Type, Accept',
 	'Content-Type' => 'application/json',
@@ -39,13 +39,11 @@ if (isset($_SESSION['infoLog'])) {
     unset($_SESSION['infoLog']);
 } */
 
-function deliver_response($status, $status_message, $data)
+function deliver_response($status, $status_message, $postData)
 {
-	//header("HTTP/1.1 $status $status_message");
-
 	$response['status'] = $status;
 	$response['status_message'] = $status_message;
-	$response['data'] = $data;
+	$response['data'] = $postData;
 
 	$json_response = json_encode($response);
 	echo $json_response;
@@ -53,7 +51,7 @@ function deliver_response($status, $status_message, $data)
 	exit();
 }
 
-if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+if ($_SERVER['REQUEST_METHOD'] == 'GET') { // récupération du model (1er paramètre de l'url) pour une requête de type GET
 	if (isset($_GET['p']) && !empty($_GET['p'])) {
 		$par = htmlspecialchars($_GET['p']);
 		$tabParam = explode('/', $par);
@@ -61,11 +59,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 	} else {
 		deliver_response(400, "Invalid Request", "Invalid Model");
 	}
-} elseif ($_SERVER['REQUEST_METHOD'] == 'POST') {
-	$data = json_decode(file_get_contents('php://input'), true);
-	if (isset($data['model']) && !empty($data['model'])) {
-		$model = $data['model'];
-		unset($data['model']);
+} elseif ($_SERVER['REQUEST_METHOD'] == 'POST') { // récupération des données passées en POST et du model pour une requête de type POST
+	$postData = json_decode(file_get_contents('php://input'), true);
+	if (isset($postData['model']) && !empty($postData['model'])) {
+		$model = $postData['model'];
+		unset($postData['model']);
 	} else {
 		deliver_response(400, "Invalid Request", "Invalid Model");
 	}
@@ -73,7 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 	deliver_response(400, "Invalid Request", "Request Method not available");
 }
 
-//vérification de l'existence du model
+// création d'un tableau contenant tous les models
 $tabFiles = scandir(ROOT.'model');
 foreach ($tabFiles as $key => $value) {
 	if ($value == '.' || $value == '..') {
@@ -83,18 +81,18 @@ foreach ($tabFiles as $key => $value) {
 
 $tabModel= str_replace('.php','',$tabFiles);
 
+//vérification de l'existence du model
 if (in_array($model, $tabModel)) {
 	// instancie le model demandé et permet son utilisation sous forme d'objet
 	require_once(ROOT.'/model/'.strtolower($model).'.php');
-	$model = new $model();
+	$model = (isset($postData) && !empty($postData)) ? new $model($postData) : new $model(); // on appelle le constructeur du model avec les données passées en POST si elles existent
 
 	if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-		$actPost = isset($data['action']) ? $data['action'] : ""; //action par défaut pour requête de type POST
+		$actPost = isset($postData['action']) ? $postData['action'] : ""; //action par défaut pour requête de type POST
 		if (method_exists($model, $actPost)) {
-			$model->$actPost();
-			/*$responsePost = $model->$actPost();
+			$responsePost = $model->$actPost();
 			$json_response = json_encode($responsePost);
-			echo $json_response;*/
+			echo $json_response;
 		} else {
 			deliver_response(400, "Invalid Request", $actPost . " is an Invalid Action");
 		}
@@ -111,7 +109,7 @@ if (in_array($model, $tabModel)) {
 				$json_response = json_encode($response);
 				echo $json_response;
 			} else {
-				deliver_response(400, "Invalid Request", "Invalid Param");
+				deliver_response(400, "Invalid Request", $tabParam . "is an Invalid Param");
 			}
 		} else {
 			deliver_response(400, "Invalid Request", $action . "is an Invalid Action");
@@ -120,45 +118,3 @@ if (in_array($model, $tabModel)) {
 } else {
 	deliver_response(400, "Invalid Request", $model . " is an Invalid Model");
 }
-
-/* $parametres = explode('/', $par);
-
-if (!$parametres[0]) {
-    //quand on arrive sur la page la première fois
-    $parametres[0] = 'cassettes';
-}
-
-//vérification de l'existence du controleur
-$tabFiles = scandir(ROOT.'controller');
-foreach ($tabFiles as $key => $value) {
-    if ($value == '.' || $value == '..') {
-        unset($tabFiles[$key]);
-    }
-}
-$tabControllers = str_replace('.php','',$tabFiles);
-if (in_array($parametres[0], $tabControllers)) {
-    $controller = $parametres[0];
-    
-    $action = isset($parametres[1]) ? $parametres[1] : 'index';//action par défaut
-
-    require(ROOT.'controller/'.strtolower($controller).'.php');
-    $controller = new $controller();
-    
-    if (!empty($_POST)) {
-        $actPost = isset($_POST['action']) ? $_POST['action'] : "";
-        if (method_exists($controller, $actPost)) {
-            $controller->$actPost();
-        }
-    }
-
-    if (method_exists($controller, $action)) {
-        array_splice($parametres, 3);   
-        unset($parametres[0]);
-        unset($parametres[1]);    
-        call_user_func_array(array($controller, $action), $parametres);
-    } else {
-        require(ROOT."view/erreur404.php");
-    }
-} else {
-    require(ROOT."view/erreur404.php");
-} */

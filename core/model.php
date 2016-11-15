@@ -30,12 +30,12 @@ class Model
         require_once(ROOT.'/model/'.strtolower($name).'.php');
         $this->$name = new $name();
     }
-	
-	// instancie le(s) model(s) utile(s) et assigne les données passées en POST à un tableau $this->data
-    function __construct()
+
+    // instancie le(s) model(s) utile(s) et assigne les données passées en POST à un tableau $this->data
+    function __construct($postData = null)
     {
-        if (isset($data)) {
-            $this->data = $data;
+        if ($postData) {
+            $this->data = $postData;
         }
         if (isset($_FILES)) {
             $this->files = $_FILES;
@@ -407,7 +407,7 @@ class Model
     *  recherche une/des donnée(s) par rapport au model instancié, permet l'utilisation des %
     *  @param array $data contient le champ dans lequel effectuer la recherche et la donnée à chercher
     */
-    public function search($data= array())
+    public function search($data = array())
     {
         global $db;
         $field = 1;
@@ -730,7 +730,7 @@ class Model
             $tab["id_".$this->table] = $cassette["id_".$this->table];
             $tab['nombre_de_download'] = $compteur;
             $this->save($tab);
-            exit;  
+            exit();
         } else {
             return false;
         }
