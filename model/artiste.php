@@ -87,6 +87,11 @@ class Artiste extends Model
     {
         if ($this->exist('id_'.$this->table,$id)) {
             $d['artiste'] = $this->getAllInfos(array('id' => $id));
+            $length = sizeof($d['artiste']);
+            for ($i = 0; $i < $length; $i++) {
+                $imgResize = explode('.', $d['artiste'][$i]['image_pochette']);
+                $d['artiste'][$i]['image_pochette_resize'] = $imgResize[0].'-resize.'.$imgResize[1];
+            }
             $d['id']['min'] = $this->getDataMaxMin("id_artiste", "MIN")["min"];
             $d['id']['max'] = $this->getDataMaxMin("id_artiste", "MAX")["max"];
             if ($id > $d['id']['min']) {
